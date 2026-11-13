@@ -38,6 +38,7 @@ export default function HomeScreen() {
   const samplesRef = useRef<Sample[]>([]);
 
   const router = useRouter();
+
   useEffect(() => {
     Accelerometer.setUpdateInterval(INTERVAL_MS);
 
@@ -92,6 +93,7 @@ export default function HomeScreen() {
     recordingRef.current = false;
     setRecording(false);
     samplesRef.current = [];
+
     setSamples([]);
     setCount(0);
     setDuration(0);
@@ -112,48 +114,51 @@ export default function HomeScreen() {
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <Text style={styles.title}>MI12 - Dead Reckoning</Text>
+
+      {/* V0 - Google Maps */}
       <Pressable
         onPress={() => {
           console.log("Map button pressed");
           router.push("/map-test");
         }}
-        style={{
-          backgroundColor: "#2563eb",
-          padding: 14,
-          borderRadius: 8,
-          marginVertical: 12,
-        }}
+        style={[styles.navigationButton, { backgroundColor: "#2563eb" }]}
       >
-        <Text style={{ color: "white", textAlign: "center" }}>
+        <Text style={styles.navigationButtonText}>
           打开 Google Maps 测试页面
         </Text>
       </Pressable>
 
+      {/* V0 - Step Detection */}
       <Pressable
         onPress={() => router.push("/step-test")}
-        style={{
-          padding: 14,
-          backgroundColor: "#16a34a",
-          borderRadius: 8,
-          marginVertical: 10,
-        }}
+        style={[styles.navigationButton, { backgroundColor: "#16a34a" }]}
       >
-        <Text style={{ color: "white", textAlign: "center" }}>
-          打开计步测试
-        </Text>
+        <Text style={styles.navigationButtonText}>打开计步测试</Text>
       </Pressable>
 
+      {/* V0 - Compass */}
       <Pressable
         onPress={() => router.push("/compass-test")}
-        style={{
-          backgroundColor: "#7c3aed",
-          padding: 14,
-          borderRadius: 8,
-          marginVertical: 10,
-        }}
+        style={[styles.navigationButton, { backgroundColor: "#7c3aed" }]}
       >
-        <Text style={{ color: "white", textAlign: "center" }}>
-          打开电子罗盘测试
+        <Text style={styles.navigationButtonText}>打开电子罗盘测试</Text>
+      </Pressable>
+
+      {/* V1.1 - Localisation 2D */}
+      <Pressable
+        onPress={() => router.push("/localization-test")}
+        style={[styles.navigationButton, { backgroundColor: "#0f766e" }]}
+      >
+        <Text style={styles.navigationButtonText}>V1.1 - Localisation 2D</Text>
+      </Pressable>
+
+      {/* V1.2 - Localisation map */}
+      <Pressable
+        onPress={() => router.push("/localization-map")}
+        style={[styles.navigationButton, { backgroundColor: "#ea580c" }]}
+      >
+        <Text style={styles.navigationButtonText}>
+          V1.2 - Localisation sur Google Maps
         </Text>
       </Pressable>
 
@@ -165,9 +170,11 @@ export default function HomeScreen() {
         <Text style={styles.measure}>
           X : {current?.x.toFixed(3) ?? "---"} g
         </Text>
+
         <Text style={styles.measure}>
           Y : {current?.y.toFixed(3) ?? "---"} g
         </Text>
+
         <Text style={styles.measure}>
           Z : {current?.z.toFixed(3) ?? "---"} g
         </Text>
@@ -260,7 +267,9 @@ export default function HomeScreen() {
           <Pressable
             style={[
               styles.button,
-              { backgroundColor: recording ? "#dc2626" : "#16a34a" },
+              {
+                backgroundColor: recording ? "#dc2626" : "#16a34a",
+              },
             ]}
             onPress={recording ? stopRecording : startRecording}
           >
@@ -288,46 +297,69 @@ const styles = StyleSheet.create({
     paddingTop: 55,
     backgroundColor: "#f1f5f9",
   },
+
   title: {
     fontSize: 25,
     fontWeight: "bold",
     textAlign: "center",
     color: "#0f172a",
+    marginBottom: 12,
   },
+
   subtitle: {
     fontSize: 16,
     textAlign: "center",
+    marginTop: 14,
     marginBottom: 20,
     color: "#64748b",
   },
+
+  navigationButton: {
+    padding: 14,
+    borderRadius: 8,
+    marginVertical: 6,
+  },
+
+  navigationButtonText: {
+    color: "#ffffff",
+    textAlign: "center",
+    fontSize: 15,
+    fontWeight: "600",
+  },
+
   card: {
     backgroundColor: "#ffffff",
     padding: 16,
     borderRadius: 14,
     marginBottom: 16,
   },
+
   sectionTitle: {
     fontSize: 18,
     fontWeight: "bold",
     marginBottom: 12,
     color: "#0f172a",
   },
+
   measure: {
     fontSize: 17,
     marginVertical: 3,
     color: "#334155",
   },
+
   norm: {
     fontSize: 22,
     fontWeight: "bold",
     marginTop: 12,
     color: "#2563eb",
   },
+
   hint: {
     fontSize: 12,
     color: "#64748b",
     marginBottom: 8,
   },
+
   chart: {
     backgroundColor: "#f8fafc",
     overflow: "hidden",
@@ -335,33 +367,39 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#e2e8f0",
   },
+
   gridLine: {
     position: "absolute",
     height: 1,
     backgroundColor: "#e2e8f0",
   },
+
   referenceLine: {
     position: "absolute",
     width: "100%",
     height: 1,
     backgroundColor: "#f59e0b",
   },
+
   axisLabels: {
     flexDirection: "row",
     justifyContent: "space-between",
     marginTop: 8,
   },
+
   buttons: {
     flexDirection: "row",
     gap: 10,
     marginTop: 16,
   },
+
   button: {
     flex: 1,
     paddingVertical: 13,
     alignItems: "center",
     borderRadius: 10,
   },
+
   buttonText: {
     color: "#ffffff",
     fontSize: 16,

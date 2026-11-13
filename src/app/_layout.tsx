@@ -10,6 +10,11 @@ export default function RootLayout() {
         options={{ title: "Step Detection Test" }}
       />
       <Stack.Screen name="compass-test" options={{ title: "Compass Test" }} />
+      <Stack.Screen
+        name="localization-test"
+        options={{ title: "Localisation 2D" }}
+      />
+      <Stack.Screen name="localization-map" options={{ headerShown: false }} />
     </Stack>
   );
 }
